@@ -57,6 +57,11 @@
   flex-direction: column;
 }
 
+.center-container {
+  display: flex;
+  justify-content: center;
+}
+
 /*
 For webcam component 
 style={

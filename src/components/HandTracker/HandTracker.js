@@ -1,5 +1,6 @@
 import React from 'react';
 import './HandTracker.css';
+import {TailSpin} from 'react-loader-spinner';
 import Webcam from 'react-webcam';
 import {Hands} from '@mediapipe/hands'; 
 import * as hands from '@mediapipe/hands';
@@ -20,7 +21,8 @@ function HandTracker(){
   const [camRes2, setCamRes2] = useState(1280);
   const [input1, setInput1] = useState(720);
   const [input2, setInput2] = useState(1280);
-  let camera = null;  
+  const [nonce, setNonce] = useState(0);
+  let camera = null;    
   
 const objectToCSVRow = (dataObject) => {
   let dataArray = [];
@@ -347,6 +349,9 @@ const objectToCSVRow = (dataObject) => {
       collectData(results);
     }
     canvasCtx.restore();
+    if (nonce === 0) {
+      setNonce(nonce => nonce + 1)
+    }
   }
   
   useEffect(()=>{
@@ -365,6 +370,7 @@ const objectToCSVRow = (dataObject) => {
     hands.onResults(onResults);
 
     if(typeof webCamRef.current !== 'undefined' && webCamRef.current !== null){
+      // eslint-disable-next-line
       camera = new cam.Camera(webCamRef.current.video,{
       onFrame: async()=>{
         await hands.send({image:webCamRef.current.video})
@@ -402,6 +408,9 @@ const objectToCSVRow = (dataObject) => {
       <div className="main-container">
         <h1>Please Use One Hand</h1>
         <Webcam ref={webCamRef} style={{width: "0%", height: "0%"}}/>
+        <div className="center-container">
+          {nonce === 0 ? (<TailSpin />) : (<div></div>)}
+        </div>
         <canvas 
           ref={canvasRef}
           className="output-canvas" /> 
