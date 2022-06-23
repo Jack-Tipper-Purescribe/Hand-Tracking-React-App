@@ -117,7 +117,7 @@ const objectToCSVRow = (dataObject) => {
     //Section 2
     for(let j = 1; j<5; j++){
       //initially add 4 after first increment 
-      if(j==1){
+      if(j===1){
         let vx = ((coordinates[j+5][0]* camRes1)-(coordinates[j][0]* camRes1));
         let vy = ((coordinates[j+5][1]* camRes2)-(coordinates[j][1]* camRes2));
         let vz = ((coordinates[j+5][2]* camRes1)-(coordinates[j][2]* camRes1));
@@ -146,7 +146,7 @@ const objectToCSVRow = (dataObject) => {
     //Section 3
     for(let k = 1; k<5; k++){
       //initially add 4 after first increment 
-      if(k==1){
+      if(k===1){
         let vx = ((coordinates[k+9][0]* camRes1)-(coordinates[k][0]* camRes1));
         let vy = ((coordinates[k+9][1]* camRes2)-(coordinates[k][1]* camRes2));
         let vz = ((coordinates[k+9][2]* camRes1)-(coordinates[k][2]* camRes1));
@@ -176,7 +176,7 @@ const objectToCSVRow = (dataObject) => {
     //Section 4
     for(let u = 1; u<5; u++){
       //initially add 4 after first increment 
-      if(u==1){
+      if(u===1){
         let vx = ((coordinates[u+13][0]* camRes1)-(coordinates[u][0]* camRes1));
         let vy = ((coordinates[u+13][1]* camRes2)-(coordinates[u][1]* camRes2));
         let vz = ((coordinates[u+13][2]* camRes1)-(coordinates[u][2]* camRes1));
@@ -204,7 +204,7 @@ const objectToCSVRow = (dataObject) => {
     //Section 5
     for(let v = 1; v<5; v++){
       //initially add 4 after first increment 
-      if(v==1){
+      if(v===1){
         let vx = ((coordinates[v+17][0]* camRes1)-(coordinates[v][0]* camRes1));
         let vy = ((coordinates[v+17][1]* camRes2)-(coordinates[v][1]* camRes2));
         let vz = ((coordinates[v+17][2]* camRes1)-(coordinates[v][2]* camRes1));
@@ -332,8 +332,8 @@ const objectToCSVRow = (dataObject) => {
       
       for(const landmarks of results.multiHandLandmarks) {
         drawConnectors(canvasCtx, landmarks, hands.HAND_CONNECTIONS,
-          {color: "#00FF00", lineWidth: 2});
-        drawLandmarks(canvasCtx, landmarks, {color: "#00ffd0", lineWidth: 1});//#5d0db8 purple
+          {color: "#5d0db8", lineWidth: 5});
+        drawLandmarks(canvasCtx, landmarks, {color: "#fff", lineWidth: 2});//#5d0db8 purple, #00ffd0 green
       
       }
       const x = results.multiHandLandmarks[0][0].x;
@@ -370,8 +370,8 @@ const objectToCSVRow = (dataObject) => {
         await hands.send({image:webCamRef.current.video})
       }
       });
-      camera.start();
-      
+
+      camera.start(); 
     }
   }, []);
 
@@ -399,33 +399,31 @@ const objectToCSVRow = (dataObject) => {
 
   return(
     <div className="container-hand-tracker">
-    <div className="main-container">
-    <h1>Please Use One Hand</h1>
-    <Webcam ref={webCamRef} />
-
-    <canvas 
-      ref={canvasRef}
-      className="output-canvas"
-      /> 
-    </div>
-
-    <div className="container-data">
-      <div>
-        <h2>Landmark_0</h2>
-        <p>X: {digit_x}</p>
-        <p>Y: {digit_y}</p>
-        <p>Z: {digit_z}</p>
-        <p>Number of datasets recorded: {countData(LandMarkData)}</p>
+      <div className="main-container">
+        <h1>Please Use One Hand</h1>
+        <Webcam ref={webCamRef} style={{width: "0%", height: "0%"}}/>
+        <canvas 
+          ref={canvasRef}
+          className="output-canvas" /> 
       </div>
 
-      <form className="utility-container">
-        <label className="selection-label">Enter your camera resolution</label>
-        <input className="input-box" type="text" value={input1} onChange={(e)=>onChangeInput1(e)} placeholder="Default set is 720p" />
-        <input className="input-box" type="text" value={input2} onChange={(e)=>onChangeInput2(e)} placeholder="Default set is 1280p" />
-        <button className="button-csv" onClick={setResolution}>Set new resolution</button>
-        <button className="button-csv" onClick={eventHandler}>Download CSV</button>
-      </form>
-    </div>
+      <div className="container-data">
+        <div>
+          <h2>Landmark_0</h2>
+          <p>X: {digit_x}</p>
+          <p>Y: {digit_y}</p>
+          <p>Z: {digit_z}</p>
+          <p>Number of datasets recorded: {countData(LandMarkData)}</p>
+        </div>
+
+        <form className="utility-container">
+          <label className="selection-label">Enter your camera resolution</label>
+          <input className="input-box" type="text" value={input1} onChange={(e)=>onChangeInput1(e)} placeholder="Default set is 720p" />
+          <input className="input-box" type="text" value={input2} onChange={(e)=>onChangeInput2(e)} placeholder="Default set is 1280p" />
+          <button className="button-csv" onClick={setResolution}>Set new resolution</button>
+          <button className="button-csv" onClick={eventHandler}>Download CSV</button>
+        </form>
+      </div>
     </div>
   )
 }
